@@ -37,10 +37,45 @@ ClapTrap    &ClapTrap::operator=(const ClapTrap &other)
 
 void ClapTrap::attack(const std::string& target)
 {
+    if (this->hitPoints <= 0)
+    {
+        std::cout << this->name << " is already dead!" << std::endl;
+        return ;
+    }
+    if (this->energyPoints > 0)
+    {
+        this->energyPoints--;
+        std::cout << this->name << " attacks " << target << ", causing " << this->attackDamage << " points of damage!" << std::endl;
+    }
+    else
+        std::cout << this->name << " couldn't attack for lack of energy" << std::endl;
 }
 void ClapTrap::takeDamage(unsigned int amount)
 {
+    if (this->hitPoints > 0)
+    {
+        if (amount >= this->hitPoints)
+            this->hitPoints = 0;
+        else
+            this->hitPoints -= amount;
+        std::cout << this->name << " took " << amount << " of damage" << std::endl;
+    }
+    else
+        std::cout << this->name << " is already dead!" << std::endl;
 }
 void ClapTrap::beRepaired(unsigned int amount)
 {
+    if (this->hitPoints > 0)
+    {
+        if (this->energyPoints > 0)
+        {
+            this->hitPoints += amount;
+            this->energyPoints--;
+            std::cout << this->name << " repaired by " << amount << " of points" << std::endl;
+        }
+        else
+            std::cout << this->name << " couldn't be repaired due to lack of energy" << std::endl;
+    }
+    else
+        std::cout << this->name << " is already dead!" << std::endl;
 }
